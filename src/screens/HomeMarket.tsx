@@ -3,6 +3,7 @@ import React from 'react'
 import {HomeMarket} from 'src/components/HomeMarket'
 import {useTypedNavigation} from 'src/hooks'
 import {TicketInfo} from 'src/types'
+import {fakeCategoriesData} from 'src/variables/fakeData'
 
 export function HomeMarketScreen() {
   const {navigate} = useTypedNavigation()
@@ -21,6 +22,7 @@ export function HomeMarketScreen() {
 
   return (
     <HomeMarket
+      categoriesList={fakeCategoriesData}
       onPressCard={onPressCard}
       onPressSearch={onPressSearch}
       onPressScan={onPressScan}

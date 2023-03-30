@@ -13,6 +13,7 @@ import {HomeMarketHeader} from './HomeMarketHeader'
 import {Categories} from '../ui/Categories'
 
 interface HomeMarketProps {
+  categoriesList: string[]
   onPressCard: (item: TicketInfo) => void
   onPressSearch: () => void
   onPressScan: () => void
@@ -22,6 +23,7 @@ export function HomeMarket({
   onPressCard,
   onPressSearch,
   onPressScan,
+  categoriesList,
 }: HomeMarketProps) {
   const {styles} = useThematicStyles(rawStyles)
 
@@ -33,7 +35,11 @@ export function HomeMarket({
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Categories />
+          <Categories
+            defaultSelection={categoriesList[0]}
+            canPress
+            list={categoriesList}
+          />
           <Spacer height={16} />
           <View style={styles.flatListContainer}>
             <FlatList

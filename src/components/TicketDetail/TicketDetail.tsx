@@ -1,187 +1,169 @@
 import React, {useState} from 'react'
 
 import {format} from 'date-fns'
-import {Image, ScrollView, StyleSheet, View, useColorScheme} from 'react-native'
+import {ru} from 'date-fns/locale'
+import {Image, ScrollView, StyleSheet, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {formatPrice} from 'src/components/formatPrice'
-import {Button, CustomHeader, Spacer, Text} from 'src/components/ui'
+import {
+  Button,
+  Categories,
+  InfoWithLeftIcon,
+  Spacer,
+  Text,
+} from 'src/components/ui'
 import {Background} from 'src/components/ui/Background'
+import {capitalize} from 'src/helpers'
 import {useThematicStyles} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 import {TicketInfo} from 'src/types'
 
-import {dark, light} from 'assets/images/crypto-coins/mapping'
-
 import {TicketDetailBuy} from './TicketDetailBuy'
-import {TicketDetailTags} from './TicketDetailTags'
 
 interface TicketDetailProps extends TicketInfo {
   onBack?: () => void
   onQRCode: () => void
+  onBuy: (count: number) => void
   priceInDollars?: number
 }
 
 export function TicketDetail({
   onBack,
+  onBuy,
   onQRCode,
   priceInDollars = 100,
-  ...item
+  tags,
+  title,
+  date,
+  description,
+  // coordinates,
+  creator,
+  purchasedTicketCount,
+  currencySymbol,
+  price,
+  shortPlacementDescription,
+  images,
 }: TicketDetailProps) {
   const [showBuy, setShowBuy] = useState(false)
   const insets = useSafeAreaInsets()
   const {styles, colors} = useThematicStyles(rawStyles)
 
-  const isDark = useColorScheme() === 'dark'
-
-  const iconName = item.currencySymbols?.toLowerCase()
-  // @ts-ignore
-  const SvgIcon = !isDark ? dark[iconName] : light[iconName]
-
   return (
     <Background>
-      <CustomHeader
-        title={item.name}
-        iconLeft="arrow-back"
-        onPressLeft={onBack}
-      />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <Image source={{uri: item.imageUrl}} style={styles.image} />
+        <Image source={{uri: images[0]}} style={styles.image} />
+        <Spacer height={20} />
+        <Categories onlyList list={tags} />
+        <Spacer height={6} />
         <View style={styles.details}>
-          <TicketDetailTags tags={item.tags} />
-          <Text t19 style={styles.name}>
-            {item.name}
+          <Text h1 numberOfLines={3}>
+            {title}
           </Text>
+          <Spacer height={4} />
           <View style={styles.row}>
             <View style={styles.rowTicket}>
               <MaterialCommunityIcons
                 name="ticket-confirmation-outline"
-                style={styles.iconStyle1}
+                size={24}
+                color={colors.textSecondary1}
               />
-              <Text t11>One time usage</Text>
+              <Spacer width={8} />
+              <Text color={Color.textSecondary1} p1>
+                Одноразовое использование
+              </Text>
             </View>
-            <View style={styles.price}>
-              {item.price && item.currencySymbols && (
-                <View style={styles.priceContainer}>
-                  <Text t2 color={Color.primary}>
-                    {formatPrice(item.price)}
-                  </Text>
-                  {SvgIcon && (
-                    <>
-                      <Spacer width={6} />
-                      <SvgIcon.default
-                        fill={colors.primary}
-                        width={30}
-                        height={30}
-                      />
-                    </>
+            {price && currencySymbol && (
+              <Text h2 color={Color.primary}>
+                {formatPrice(price)} {currencySymbol.toUpperCase()}
+              </Text>
+            )}
+          </View>
+          <Spacer height={12} />
+          <InfoWithLeftIcon
+            icon="ios-calendar-sharp"
+            content={
+              <>
+                <Text style={styles.textStyle} p1 bold>
+                  {capitalize(format(date, 'LLLL dd, yyyy', {locale: ru}))}
+                </Text>
+                <Spacer height={2} />
+                <Text style={styles.textStyle} color={Color.textBase2} p1>
+                  {capitalize(
+                    format(date, 'EEEE, HH:mm', {
+                      locale: ru,
+                    }),
                   )}
-                </View>
-              )}
-              <View style={styles.priceContainer}>
-                {item.currencySymbols && (
-                  <Text t12 color={Color.graphicSecond4}>
-                    {item.currencySymbols}
-                  </Text>
-                )}
-                {priceInDollars && (
-                  <Text t12 color={Color.graphicSecond4}>
-                    {' '}
-                    - {priceInDollars} $
-                  </Text>
-                )}
-              </View>
-            </View>
-          </View>
-          <View style={styles.rowInfo}>
-            <View style={styles.circle}>
-              <MaterialCommunityIcons
-                name="calendar-check"
-                style={styles.iconStyle2}
-              />
-            </View>
-            <View style={styles.flexOne}>
-              <Text t7 style={styles.dateText}>
-                Start Date: {format(item.startData, 'MMM d, y')}
-              </Text>
-              <Text t9 style={styles.dateText}>
-                {format(item.startData, 'EEEE, hh:mm a')}
-              </Text>
-              <Spacer height={10} />
-              <Text t7 style={styles.dateText}>
-                End Date: {format(item.endData, 'MMM d, y')}
-              </Text>
-              <Text t9 style={styles.dateText}>
-                {format(item.endData, 'EEEE, hh:mm a')}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.rowInfo}>
-            <View style={styles.circle}>
-              <MaterialCommunityIcons
-                name="map-marker-outline"
-                style={styles.iconStyle2}
-              />
-            </View>
-            <View>
-              <Text t7 style={styles.dateText}>
-                Location
-              </Text>
-              <Text t9>{item.geoPosition}</Text>
-            </View>
-          </View>
-          <View style={styles.rowInfo}>
-            <View style={styles.circle}>
-              <MaterialCommunityIcons
-                name="account"
-                style={styles.iconStyle2}
-              />
-            </View>
-            <View>
-              <Text t7 style={styles.dateText}>
-                Ticket Provider
-              </Text>
-              <Text t9>0x0da46c783f8cxv85x6z5cxhxv12382</Text>
-              <Spacer height={8} />
-              <Text t7 style={styles.dateText}>
-                Ticket Approval
-              </Text>
-              <Text t9>0x0cd46a783f8cxv45x6z5cxhxv13782</Text>
-            </View>
-          </View>
-          {item.description && (
+                </Text>
+              </>
+            }
+          />
+          <Spacer height={10} />
+          <InfoWithLeftIcon
+            icon="location-outline"
+            content={
+              <>
+                <Text style={styles.textStyle} p1 bold>
+                  Местоположение
+                </Text>
+                <Spacer height={2} />
+                <Text style={styles.textStyle} color={Color.textBase2} p1>
+                  {shortPlacementDescription}
+                </Text>
+              </>
+            }
+          />
+          <Spacer height={10} />
+          <InfoWithLeftIcon
+            icon="person-circle-outline"
+            content={
+              <>
+                <Text style={styles.textStyle} p1 bold>
+                  Адрес создателя (minter)
+                </Text>
+                <Spacer height={2} />
+                <Text
+                  style={styles.textStyle}
+                  onPress={() => console.log(`creator: ${creator}`)}
+                  color={Color.primary}
+                  p1>
+                  {creator + creator}
+                </Text>
+              </>
+            }
+          />
+          {description && (
             <>
-              <Text t7 style={styles.dateText}>
-                Desciption
-              </Text>
-              <Spacer height={20} />
-              <Text t9>{item.description}</Text>
-              <Spacer height={36} />
+              <Spacer height={18} />
+              <Text h3>Описание</Text>
+              <Spacer height={8} />
+              <Text p1>{description}</Text>
             </>
           )}
-          {item.tickets > 0 && (
-            <View>
-              <Text t11 style={styles.ticketText} color={Color.primary}>
-                Tickets available: {item.tickets}
+          <Spacer height={18} />
+          {purchasedTicketCount && purchasedTicketCount > 0 && (
+            <>
+              <Text p1 style={styles.ticketText} color={Color.primary}>
+                Количество купленных билетов: {purchasedTicketCount}
               </Text>
-              <Button style={styles.ticketButton} onPress={onQRCode}>
-                {item.tickets > 1
-                  ? 'Show QR-code of the tickets'
-                  : 'Show QR-codes of ticket'}
+              <Button onPress={onQRCode}>
+                {purchasedTicketCount > 1
+                  ? 'Использовать билеты'
+                  : 'Использовать билет'}
               </Button>
-            </View>
+              <Spacer height={16} />
+            </>
           )}
-          <Button style={styles.button} onPress={() => setShowBuy(true)}>
-            {item.tickets > 0 ? 'Buy more' : 'Buy'}
-          </Button>
+          <Button onPress={() => setShowBuy(true)}>Купить билет</Button>
         </View>
         <Spacer height={insets.bottom} />
       </ScrollView>
       {showBuy && (
         <TicketDetailBuy
-          price={item.price}
-          currencySymbols={item.currencySymbols}
+          onBuy={onBuy}
+          price={price}
+          currencySymbol={currencySymbol}
           priceInDollars={priceInDollars}
           onClose={() => setShowBuy(false)}
         />
@@ -198,64 +180,27 @@ const rawStyles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
   },
-  ticketButton: {
-    alignSelf: 'center',
-  },
-  button: {
-    marginVertical: 20,
-  },
   image: {
     aspectRatio: 1 / 1,
     width: '100%',
     resizeMode: 'cover',
-    marginBottom: 25,
-  },
-  iconStyle1: {
-    color: Color.textSecond1,
-    marginRight: 10,
-    fontSize: 24,
-  },
-  iconStyle2: {
-    color: Color.primary,
-    fontSize: 30,
-  },
-  dateText: {
-    marginBottom: 2,
   },
   details: {
-    paddingHorizontal: 24,
-  },
-  name: {
-    marginVertical: 15,
+    paddingHorizontal: 20,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 45,
   },
   rowTicket: {
     marginTop: 7,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  price: {
-    alignItems: 'center',
-  },
-  rowInfo: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginBottom: 30,
-  },
-  circle: {
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 20,
-    borderRadius: 100,
-    backgroundColor: Color.primary1,
+  textStyle: {
+    width: '100%',
+    flexWrap: 'wrap',
   },
   goBackContainer: {
     position: 'absolute',
@@ -264,9 +209,5 @@ const rawStyles = StyleSheet.create({
   },
   flexOne: {
     flex: 1,
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 })

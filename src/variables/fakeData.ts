@@ -17,6 +17,7 @@ export const fakeTicketsData: TicketInfo[] = [
     currencySymbol: 'USDT',
     amountTotal: 1000,
     amountAvailable: 300,
+    creator: '0x638C4c657F80a8A99faeca550B733aaae81174ef',
   },
   {
     id: 2,
@@ -35,6 +36,8 @@ export const fakeTicketsData: TicketInfo[] = [
     currencySymbol: 'USDC',
     amountTotal: 500,
     amountAvailable: 0,
+    creator: '0x638C4c657F80a8A99faeca550B733aaae81174ef',
+    purchasedTicketCount: 1,
   },
 ]
 

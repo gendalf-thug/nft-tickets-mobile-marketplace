@@ -9,21 +9,23 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {BottomSheet} from 'src/components/bottom-sheet'
-import {Button, Text} from 'src/components/ui'
+import {Button, Spacer, Text} from 'src/components/ui'
 import {useThematicStyles} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 import {TicketInfo} from 'src/types'
 
 interface TicketDetailBuyProps {
   onClose: () => void
-  currencySymbols?: TicketInfo['currencySymbols']
+  onBuy: (count: number) => void
+  currencySymbol?: TicketInfo['currencySymbol']
   price?: TicketInfo['price']
   priceInDollars?: number
 }
 
 export function TicketDetailBuy({
   onClose,
-  currencySymbols,
+  onBuy,
+  currencySymbol,
   price,
   priceInDollars,
 }: TicketDetailBuyProps) {
@@ -44,7 +46,7 @@ export function TicketDetailBuy({
   return (
     <BottomSheet onClose={onClose} closeDistance={closeDistance}>
       <View style={styles.rowAmount}>
-        <Text t7>Amount</Text>
+        <Text h4>Количество</Text>
         <View style={styles.count}>
           <TouchableOpacity
             style={styles.cube}
@@ -52,7 +54,7 @@ export function TicketDetailBuy({
             onPress={pressMinus}>
             <MaterialCommunityIcons name={'minus'} style={styles.iconStyle} />
           </TouchableOpacity>
-          <Text t4>{count}</Text>
+          <Text h3>{count}</Text>
           <TouchableOpacity
             style={styles.cube}
             activeOpacity={0.7}
@@ -61,24 +63,29 @@ export function TicketDetailBuy({
           </TouchableOpacity>
         </View>
       </View>
+      <Spacer height={16} />
       <View style={styles.rowTotal}>
-        <Text t7>Total</Text>
-
+        <Text h2>Всего</Text>
         <View style={styles.price}>
-          {price && currencySymbols && (
-            <Text t3 color={Color.primary}>
-              {`${(price * count).toLocaleString()} ${currencySymbols}`}
+          {price && currencySymbol && (
+            <Text h3 color={Color.primary}>
+              {`${(price * count).toLocaleString()} ${currencySymbol}`}
             </Text>
           )}
           {priceInDollars && (
-            <Text t12 color={Color.graphicSecond4}>
+            <Text p1 color={Color.textBase2}>
               {priceInDollars.toLocaleString()} $
             </Text>
           )}
         </View>
       </View>
-      <Button onPress={onClose} style={styles.button}>
-        Continue
+      <Button
+        onPress={() => {
+          onBuy(count)
+          onClose()
+        }}
+        style={styles.button}>
+        Купить
       </Button>
     </BottomSheet>
   )
@@ -89,13 +96,12 @@ const rawStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 30,
   },
   rowTotal: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 25,
+    marginBottom: 26,
   },
   price: {
     alignItems: 'flex-end',
@@ -111,11 +117,13 @@ const rawStyles = StyleSheet.create({
   cube: {
     width: 30,
     height: 30,
-    borderRadius: 6,
-    backgroundColor: Color.primary1,
+    borderRadius: 8,
+    backgroundColor: Color.primaryOpacity2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconStyle: {
-    fontSize: 30,
+    fontSize: 24,
     color: Color.primary,
   },
 })

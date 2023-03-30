@@ -10,5 +10,11 @@ export function TicketDetailScreen() {
     navigate('qr', item)
   }
 
-  return <TicketDetail onBack={goBack} onQRCode={onQRCode} {...item} />
+  const onBuy = (count: number) => {
+    console.log(`buy tickets - ${count}`)
+  }
+
+  return (
+    <TicketDetail onBuy={onBuy} onBack={goBack} onQRCode={onQRCode} {...item} />
+  )
 }

@@ -43,6 +43,8 @@ export interface TicketInfo {
   currencySymbol?: string
   amountTotal: number
   amountAvailable: number
+  creator: string
+  purchasedTicketCount?: number
 }
 
 export interface PersonInfo {

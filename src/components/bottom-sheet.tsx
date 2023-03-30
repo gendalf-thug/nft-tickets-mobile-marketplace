@@ -201,16 +201,17 @@ export function BottomSheet({
       </TouchableWithoutFeedback>
       <Animated.View
         style={[styles.animateView, styles.content, bottomSheetStyle]}>
-        <GestureDetector gesture={headerGesture}>
-          <Animated.View>
-            <View style={styles.header}>
-              <Text t6 color={Color.textBase1}>
+        {title ? (
+          <GestureDetector gesture={headerGesture}>
+            <Animated.View>
+              <Text h4 color={Color.textBase1}>
                 {title}
               </Text>
-              <Spacer />
-            </View>
-          </Animated.View>
-        </GestureDetector>
+            </Animated.View>
+          </GestureDetector>
+        ) : (
+          <Spacer height={32} />
+        )}
         <GestureDetector
           gesture={Gesture.Simultaneous(panGesture, scrollViewGesture)}>
           <Animated.ScrollView
@@ -248,16 +249,9 @@ const rawStyles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    backgroundColor: Color.bg1,
+    backgroundColor: Color.bg,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingHorizontal: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    height: 30,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
   },
 })
