@@ -1,0 +1,43 @@
+{
+  "name": "faraway-kingdom-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "solhint 'contracts/*.sol'",
+    "lint:fix": "solhint 'contracts/**/*.sol' --fix",
+    "coverage": "hardhat coverage",
+    "prettier": "prettier --write 'contracts/**/*.sol'"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
+    "@nomiclabs/hardhat-etherscan": "^3.1.76",
+    "@nomiclabs/hardhat-waffle": "^2.0.5",
+    "@openzeppelin/contracts": "^4.8.2",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
+    "ethereum-waffle": "^4.0.10",
+    "ethers": "^6.2.3",
+    "hardhat": "^2.13.0",
+    "hardhat-contract-sizer": "^2.8.0",
+    "hardhat-deploy": "^0.11.25",
+    "hardhat-gas-reporter": "^1.0.9",
+    "prettier": "^2.8.4",
+    "prettier-plugin-solidity": "^1.1.3",
+    "solhint": "^3.4.1",
+    "solidity-coverage": "^0.8.2"
+  },
+  "dependencies": {
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "typechain": "^8.1.1",
+    "typescript": "^5.0.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
