@@ -2,11 +2,13 @@
 
 pragma solidity ^0.8.9;
 
+import 'hardhat/console.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
 
 error ipfsHashShouldNotBeEmptyString();
 error OnlyStaffOwnerCanDoThis();
@@ -36,8 +38,9 @@ contract NftTickets is ERC1155URIStorage, ReentrancyGuard {
   );
 
   event TicketsUsed(
-    bytes32 ethSignedMessage,
+    bytes32 message,
     address indexed collector,
+    uint indexed ticketID,
     uint amountOfTickets
   );
   event TicketsWasSuccessfullyUsed(bytes32 ethSignedMessage);
@@ -61,10 +64,9 @@ contract NftTickets is ERC1155URIStorage, ReentrancyGuard {
   mapping(uint => Staff) private staff;
 
   // To generate unique message hashes when checking tickets
-  mapping(uint => Counters.Counter) private nounceCounters;
+  mapping(uint => Counters.Counter) private ticketUsageNounceCounters;
   // To verify tickets by messages
-  mapping(uint => mapping(bytes32 => TicketVerificationInfo))
-    private activeMessages;
+  mapping(bytes32 => TicketVerificationInfo) public activeVerifications;
 
   // ** CONSTRUCTOR **
   constructor() ERC1155('') {
@@ -120,7 +122,7 @@ contract NftTickets is ERC1155URIStorage, ReentrancyGuard {
     address collector,
     uint ticketId,
     uint amountOfTickets
-  ) external nonReentrant returns (bytes32) {
+  ) external nonReentrant returns (bytes32 message, bytes32 key) {
     // Tickets can only be accepted by staff collector
     if (!staff[ticketId].ticketCollectors[collector])
       revert TicketsCanOnlyBeAcceptedByTheStaffCollectors();
@@ -128,41 +130,42 @@ contract NftTickets is ERC1155URIStorage, ReentrancyGuard {
     // There is already a balance check inside this function
     _safeTransferFrom(msg.sender, collector, ticketId, amountOfTickets, '');
 
-    nounceCounters[ticketId].increment();
-    uint nounce = nounceCounters[ticketId].current();
+    ticketUsageNounceCounters[ticketId].increment();
+    uint ticketUsageNounce = ticketUsageNounceCounters[ticketId].current();
 
-    bytes32 message = keccak256(
-      abi.encodePacked(ticketId, amountOfTickets, collector, nounce)
+    message = keccak256(
+      abi.encodePacked(ticketId, amountOfTickets, collector, ticketUsageNounce)
     );
-    bytes32 ethSignedMessage = message.toEthSignedMessageHash();
-    activeMessages[ticketId][ethSignedMessage] = TicketVerificationInfo(
+
+    key = keccak256(abi.encode(ticketId, ticketUsageNounce));
+
+    activeVerifications[key] = TicketVerificationInfo(
       collector,
       amountOfTickets,
       true
     );
-    emit TicketsUsed(ethSignedMessage, collector, amountOfTickets);
 
-    return ethSignedMessage;
+    emit TicketsUsed(message, collector, ticketId, amountOfTickets);
   }
 
   function verifyTickets(
     uint ticketID,
     address signer,
-    bytes32 ethSignedMessage,
-    bytes memory signature
+    bytes32 message,
+    bytes memory signature,
+    bytes32 key
   ) public onlyStaffTicketCollectors(ticketID) returns (bool) {
-    TicketVerificationInfo memory tvi = activeMessages[ticketID][
-      ethSignedMessage
-    ];
+    TicketVerificationInfo memory tvi = activeVerifications[key];
     if (!tvi.ready) {
       revert TicketsWereNotUsed();
     }
     if (msg.sender != tvi.collector) {
       revert NeedAnotherCollector(tvi.collector);
     }
-    if (ethSignedMessage.recover(signature) == signer) {
-      activeMessages[ticketID][ethSignedMessage].ready = false;
-      emit TicketsWasSuccessfullyUsed(ethSignedMessage);
+
+    if (message.toEthSignedMessageHash().recover(signature) == signer) {
+      activeVerifications[key].ready = false;
+      emit TicketsWasSuccessfullyUsed(message);
 
       return true;
     } else {

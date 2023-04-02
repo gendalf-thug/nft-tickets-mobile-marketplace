@@ -2,13 +2,13 @@ import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs'
 import {expect} from 'chai'
 import {ethers} from 'hardhat'
 
-import {NftTickets, NftTicketsMarketplace} from '../typechain-types'
+import {NftTickets} from '../typechain-types'
 
 const TICKETS_AMOUNT = 500
 const IPFS_HASH = 'ipfs-hash'
 
 describe('NFT-Tickets', function () {
-  let Tickets: NftTickets, TicketsMarketplace: NftTicketsMarketplace
+  let Tickets: NftTickets
 
   beforeEach(async () => {
     // const accounts = await ethers.getSigners()
@@ -16,9 +16,9 @@ describe('NFT-Tickets', function () {
     Tickets = (await (
       await ethers.getContractFactory('NftTickets')
     ).deploy()) as NftTickets
-    TicketsMarketplace = (await (
-      await ethers.getContractFactory('NftTicketsMarketplace')
-    ).deploy(Tickets.address)) as NftTicketsMarketplace
+    // TicketsMarketplace = (await (
+    //   await ethers.getContractFactory('NftTicketsMarketplace')
+    // ).deploy(Tickets.address)) as NftTicketsMarketplace
   })
 
   describe('General tests', function () {
@@ -76,148 +76,90 @@ describe('NFT-Tickets', function () {
       expect(await Tickets.connect(collector).canCollectTicket(1)).to.be.true
     })
 
-    // it('Should set the right owner', async function () {
-    //   const {lock, owner} = await loadFixture(deployOneYearLockFixture)
+    it('Use tickets test', async function () {
+      const [owner, collector, guest1, guest2] = await ethers.getSigners()
+      const ticketId = 1
 
-    //   expect(await lock.owner()).to.equal(owner.address)
-    // })
+      // Подготовка для тестирования логики использования билетов
+      await Tickets.createTicket(TICKETS_AMOUNT, IPFS_HASH)
+      await Tickets.changeTicketCollectors(ticketId, collector.address, true)
+      await Tickets.safeTransferFrom(
+        owner.address,
+        guest1.address,
+        ticketId,
+        20,
+        '0x',
+      )
 
-    // it('Should receive and store the funds to lock', async function () {
-    //   const {lock, lockedAmount} = await loadFixture(deployOneYearLockFixture)
+      const amount = 5
+      const useTicketsPromise = () =>
+        Tickets.connect(guest1).useTickets(collector.address, ticketId, amount)
 
-    //   expect(await ethers.provider.getBalance(lock.address)).to.equal(
-    //     lockedAmount,
-    //   )
-    // })
+      // Проверяем событие(важно для graph)
+      expect(useTicketsPromise())
+        .to.emit(Tickets, 'TicketsUsed')
+        .withArgs(anyValue, collector.address, ticketId, amount)
 
-    // it('Should fail if the unlockTime is not in the future', async function () {
-    //   // We don't use the fixture here because we want a different deployment
-    //   const latestTime = await time.latest()
-    //   const Lock = await ethers.getContractFactory('Lock')
-    //   await expect(Lock.deploy(latestTime, {value: 1})).to.be.revertedWith(
-    //     'Unlock time should be in the future',
-    //   )
-    // })
+      // Проверка уникальности сообщения(благодаря nouces)
+      const firstFiveTicketsMess = await useTicketsPromise()
+      const secondFiveTicketsMess = await useTicketsPromise()
+
+      expect(firstFiveTicketsMess).to.be.string
+      expect(firstFiveTicketsMess).to.not.equal(secondFiveTicketsMess)
+
+      // Проверяем что баланс билетов изменился
+      expect(await Tickets.balanceOf(guest1.address, ticketId)).to.equal(5)
+
+      // Проверяем случай если сборщик билетов указан неверно
+      // (вдруг мошенник притвориться билетером)
+      expect(
+        Tickets.connect(guest1).useTickets(guest2.address, ticketId, amount),
+      ).to.revertedWithCustomError(
+        Tickets,
+        'TicketsCanOnlyBeAcceptedByTheStaffCollectors',
+      )
+    })
+
+    it('Tickets verifying test', async function () {
+      const [owner, collector, guest] = await ethers.getSigners()
+      const ticketId = 1
+
+      // Подготовка для тестирования логики использования билетов
+      await Tickets.createTicket(TICKETS_AMOUNT, IPFS_HASH)
+      await Tickets.changeTicketCollectors(ticketId, collector.address, true)
+      await Tickets.safeTransferFrom(
+        owner.address,
+        guest.address,
+        ticketId,
+        20,
+        '0x',
+      )
+
+      // Используем билетики и получаем сообщение которое в приложении
+      // будет QR кодом
+      const {message, key} = await Tickets.connect(guest).callStatic.useTickets(
+        collector.address,
+        ticketId,
+        20,
+      )
+
+      // Без таймаута activeVerifications маппинг не успевает обновиться
+      setTimeout(async () => {
+        console.log('🚀 - message:', message)
+        const signature = await guest.signMessage(
+          ethers.utils.arrayify(message),
+        )
+
+        expect(
+          await Tickets.connect(collector).callStatic.verifyTickets(
+            ticketId,
+            guest.address,
+            message,
+            signature,
+            key,
+          ),
+        ).to.equal(true)
+      }, 0)
+    })
   })
 })
-
-// import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs'
-// import {loadFixture, time} from '@nomicfoundation/hardhat-network-helpers'
-// import {expect} from 'chai'
-// import {ethers} from 'hardhat'
-
-// describe('Lock', function () {
-//   // We define a fixture to reuse the same setup in every test.
-//   // We use loadFixture to run this setup once, snapshot that state,
-//   // and reset Hardhat Network to that snapshot in every test.
-//   async function deployOneYearLockFixture() {
-//     const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60
-//     const ONE_GWEI = 1_000_000_000
-
-//     const lockedAmount = ONE_GWEI
-//     const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS
-
-//     // Contracts are deployed using the first signer/account by default
-//     const [owner, otherAccount] = await ethers.getSigners()
-
-//     const Lock = await ethers.getContractFactory('Lock')
-//     const lock = await Lock.deploy(unlockTime, {value: lockedAmount})
-
-//     return {lock, unlockTime, lockedAmount, owner, otherAccount}
-//   }
-
-//   describe('Deployment', function () {
-//     it('Should set the right unlockTime', async function () {
-//       const {lock, unlockTime} = await loadFixture(deployOneYearLockFixture)
-
-//       expect(await lock.unlockTime()).to.equal(unlockTime)
-//     })
-
-//     it('Should set the right owner', async function () {
-//       const {lock, owner} = await loadFixture(deployOneYearLockFixture)
-
-//       expect(await lock.owner()).to.equal(owner.address)
-//     })
-
-//     it('Should receive and store the funds to lock', async function () {
-//       const {lock, lockedAmount} = await loadFixture(deployOneYearLockFixture)
-
-//       expect(await ethers.provider.getBalance(lock.address)).to.equal(
-//         lockedAmount,
-//       )
-//     })
-
-//     it('Should fail if the unlockTime is not in the future', async function () {
-//       // We don't use the fixture here because we want a different deployment
-//       const latestTime = await time.latest()
-//       const Lock = await ethers.getContractFactory('Lock')
-//       await expect(Lock.deploy(latestTime, {value: 1})).to.be.revertedWith(
-//         'Unlock time should be in the future',
-//       )
-//     })
-//   })
-
-//   describe('Withdrawals', function () {
-//     describe('Validations', function () {
-//       it('Should revert with the right error if called too soon', async function () {
-//         const {lock} = await loadFixture(deployOneYearLockFixture)
-
-//         await expect(lock.withdraw()).to.be.revertedWith(
-//           "You can't withdraw yet",
-//         )
-//       })
-
-//       it('Should revert with the right error if called from another account', async function () {
-//         const {lock, unlockTime, otherAccount} = await loadFixture(
-//           deployOneYearLockFixture,
-//         )
-
-//         // We can increase the time in Hardhat Network
-//         await time.increaseTo(unlockTime)
-
-//         // We use lock.connect() to send a transaction from another account
-//         await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-//           "You aren't the owner",
-//         )
-//       })
-
-//       it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-//         const {lock, unlockTime} = await loadFixture(deployOneYearLockFixture)
-
-//         // Transactions are sent using the first signer by default
-//         await time.increaseTo(unlockTime)
-
-//         await expect(lock.withdraw()).not.to.be.reverted
-//       })
-//     })
-
-//     describe('Events', function () {
-//       it('Should emit an event on withdrawals', async function () {
-//         const {lock, unlockTime, lockedAmount} = await loadFixture(
-//           deployOneYearLockFixture,
-//         )
-
-//         await time.increaseTo(unlockTime)
-
-//         await expect(lock.withdraw())
-//           .to.emit(lock, 'Withdrawal')
-//           .withArgs(lockedAmount, anyValue) // We accept any value as `when` arg
-//       })
-//     })
-
-//     describe('Transfers', function () {
-//       it('Should transfer the funds to the owner', async function () {
-//         const {lock, unlockTime, lockedAmount, owner} = await loadFixture(
-//           deployOneYearLockFixture,
-//         )
-
-//         await time.increaseTo(unlockTime)
-
-//         await expect(lock.withdraw()).to.changeEtherBalances(
-//           [owner, lock],
-//           [lockedAmount, -lockedAmount],
-//         )
-//       })
-//     })
-//   })
-// })
