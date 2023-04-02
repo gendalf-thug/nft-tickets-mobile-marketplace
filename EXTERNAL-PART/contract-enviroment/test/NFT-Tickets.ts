@@ -1,7 +1,11 @@
+import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs'
 import {expect} from 'chai'
 import {ethers} from 'hardhat'
 
 import {NftTickets, NftTicketsMarketplace} from '../typechain-types'
+
+const TICKETS_AMOUNT = 500
+const IPFS_HASH = 'ipfs-hash'
 
 describe('NFT-Tickets', function () {
   let Tickets: NftTickets, TicketsMarketplace: NftTicketsMarketplace
@@ -18,7 +22,7 @@ describe('NFT-Tickets', function () {
   })
 
   describe('General tests', function () {
-    it('creating tickets', async function () {
+    it('Сreating not valid tickets', async function () {
       expect(Tickets.createTicket(500, '')).to.be.revertedWithCustomError(
         Tickets,
         'ipfsHashShouldNotBeEmptyString',
@@ -28,6 +32,48 @@ describe('NFT-Tickets', function () {
         Tickets,
         'ipfsHashShouldNotBeEmptyString',
       )
+
+      expect(
+        Tickets.createTicket(0, 'heofu382h2'),
+      ).to.be.revertedWithCustomError(Tickets, 'AmountMustBeAboveZero')
+    })
+    it('Сreating tickets', async function () {
+      const accounts = await ethers.getSigners()
+      const ticketID = 1
+
+      expect(Tickets.createTicket(TICKETS_AMOUNT, IPFS_HASH))
+        .to.emit(Tickets, 'TicketCreated')
+        .withArgs(accounts[0], anyValue, TICKETS_AMOUNT, IPFS_HASH)
+
+      expect(await Tickets.balanceOf(accounts[0].address, ticketID)).to.equal(
+        TICKETS_AMOUNT,
+      )
+      expect(await Tickets.uri(ticketID)).to.equal(
+        `https://ipfs.io/ipfs/${IPFS_HASH}`,
+      )
+      expect(await Tickets.getTicketCreator(ticketID)).to.equal(
+        accounts[0].address,
+      )
+    })
+
+    it('Assign ticket collectors', async function () {
+      const [, collector, guest] = await ethers.getSigners()
+      Tickets.createTicket(TICKETS_AMOUNT, IPFS_HASH)
+
+      expect(
+        Tickets.connect(guest).changeTicketCollectors(
+          1,
+          collector.address,
+          true,
+        ),
+      ).to.be.revertedWithCustomError(Tickets, 'OnlyStaffOwnerCanDoThis')
+      expect(await Tickets.connect(collector).canCollectTicket(1)).to.be.false
+
+      expect(Tickets.changeTicketCollectors(1, collector.address, true))
+        .to.emit(Tickets, 'StaffCollectorsChanged')
+        .withArgs(1, collector.address, true)
+
+      expect(await Tickets.connect(collector).canCollectTicket(1)).to.be.true
     })
 
     // it('Should set the right owner', async function () {
