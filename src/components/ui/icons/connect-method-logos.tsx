@@ -134,7 +134,7 @@ export const ConnectMethodLogos = {
           x={0}
           y={7}
           width={100}
-          height={88}>
+          height={100}>
           <Path d="M100 7.567H0V94.69h100V7.567Z" fill="#fff" />
         </Mask>
         <G mask="url(#a)">

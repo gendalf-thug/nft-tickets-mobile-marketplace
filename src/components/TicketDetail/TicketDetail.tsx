@@ -157,7 +157,7 @@ export function TicketDetail({
           )}
           <Button onPress={() => setShowBuy(true)}>Купить билет</Button>
         </View>
-        <Spacer height={insets.bottom} />
+        <Spacer height={insets.bottom + 16} />
       </ScrollView>
       {showBuy && (
         <TicketDetailBuy

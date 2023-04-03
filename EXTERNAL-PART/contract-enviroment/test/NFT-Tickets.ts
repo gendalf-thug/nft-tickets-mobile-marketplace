@@ -145,11 +145,11 @@ describe('NFT-Tickets', function () {
 
       // Без таймаута activeVerifications маппинг не успевает обновиться
       setTimeout(async () => {
-        console.log('🚀 - message:', message)
         const signature = await guest.signMessage(
           ethers.utils.arrayify(message),
         )
 
+        // Проверка того что именно данный человек перевел билеты билета
         expect(
           await Tickets.connect(collector).callStatic.verifyTickets(
             ticketId,
