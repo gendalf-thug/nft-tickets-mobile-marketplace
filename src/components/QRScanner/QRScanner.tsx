@@ -44,10 +44,12 @@ type coordinatesType = {x: number; y: number}
 export const QRScanner = forwardRef<QRScannerRefType, QRScannerProps>(
   ({onScanBarcodes, onPressBack, onChoiceImage}, ref) => {
     const isFocused = useIsFocused()
+    const {top, bottom} = useSafeAreaInsets()
+
     const isCameraAllowed = useCameraPermissions()
     const cameraRef = useRef<Camera>(null)
     const [flashEnabled, setFlashEnabled] = useState(false)
-    const {top, bottom} = useSafeAreaInsets()
+
     const [warning, setWarning] = useState('')
     const {styles, colors} = useThematicStyles(rawStyles)
 
@@ -131,8 +133,8 @@ export const QRScanner = forwardRef<QRScannerRefType, QRScannerProps>(
 
     const focusGesture = Gesture.Tap()
       .numberOfTaps(1)
-      .requireExternalGestureToFail(flashlightGesture)
-      .onFinalize(e => {
+      .requireExternalGestureToFail(flashlightGesture, imageChoiceGesture)
+      .onEnd(e => {
         if (e.x !== 0 && e.y !== 0) runOnJS(changeFocus)({x: e.x, y: e.y})
       })
 
@@ -141,14 +143,16 @@ export const QRScanner = forwardRef<QRScannerRefType, QRScannerProps>(
     return isFocused ? (
       <Background style={styles.container}>
         <GestureDetector gesture={focusGesture}>
-          <Camera
-            ref={cameraRef}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={!isForeground}
-            frameProcessor={frameProcessor}
-            frameProcessorFps={5}
-            torch={flashEnabled ? 'on' : 'off'}>
+          <Animated.View style={styles.container}>
+            <Camera
+              ref={cameraRef}
+              style={StyleSheet.absoluteFill}
+              device={device}
+              isActive={!isForeground}
+              frameProcessor={frameProcessor}
+              frameProcessorFps={5}
+              torch={flashEnabled ? 'on' : 'off'}
+            />
             <Animated.View style={[rectAnim, styles.focusRect]} />
             <TouchableOpacity
               onPress={onPressBack}
@@ -199,7 +203,7 @@ export const QRScanner = forwardRef<QRScannerRefType, QRScannerProps>(
                 )}
               </View>
             </View>
-          </Camera>
+          </Animated.View>
         </GestureDetector>
       </Background>
     ) : null
@@ -209,28 +213,6 @@ export const QRScanner = forwardRef<QRScannerRefType, QRScannerProps>(
 const rawStyles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  iconContainer: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    fontSize: 300,
-    opacity: 0.5,
-    color: Color.primary,
-  },
-  hint: {
-    position: 'absolute',
-    alignSelf: 'center',
-    width: 180,
-    height: 40,
-    borderRadius: 100,
-    backgroundColor: Color.border,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   backContainer: {
     alignSelf: 'flex-start',
@@ -245,10 +227,6 @@ const rawStyles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     backgroundColor: Color.primaryOpacity2,
-  },
-  barcodeTextURL: {
-    position: 'absolute',
-    bottom: 50,
   },
   bottomView: {
     flex: 1,
