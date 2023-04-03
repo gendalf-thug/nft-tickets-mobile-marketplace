@@ -2,6 +2,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -33,6 +34,10 @@
 - (BOOL)concurrentRootEnabled
 {
   return true;
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end

@@ -9,7 +9,7 @@ export function HomeMarketScreen() {
   const {navigate} = useTypedNavigation()
 
   const onPressCard = (item: TicketInfo) => {
-    navigate('ticketDetail', item)
+    navigate('ticketDetail', {ticketId: item.id})
   }
 
   const onPressSearch = () => {
@@ -17,7 +17,7 @@ export function HomeMarketScreen() {
   }
 
   const onPressScan = () => {
-    navigate('scan')
+    navigate('collectorAddressScanner')
   }
 
   return (

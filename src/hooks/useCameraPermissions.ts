@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import {Alert, Linking, PermissionsAndroid, Platform} from 'react-native'
 import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions'
 
-export function useCameraPermissions() {
+export function useCameraPermissions(onCancel?: () => void) {
   const [isAllowed, setIsAllowed] = useState(false)
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export function useCameraPermissions() {
           {
             text: 'Cancel',
             style: 'cancel',
+            onPress: onCancel,
           },
         ],
       )

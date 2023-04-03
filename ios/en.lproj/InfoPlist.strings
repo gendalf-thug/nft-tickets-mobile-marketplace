@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  NftTicketsMobileMarketplace
+
+  Created by Вадим Прасолов on 03.04.2023.
+  
+*/
+
+"NSCameraUsageDescription" = "To scan QR codes, the application needs access to the camera.";
+

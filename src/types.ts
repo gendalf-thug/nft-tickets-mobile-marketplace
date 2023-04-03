@@ -15,9 +15,11 @@ export type RootStackParamList = {
   welcome: undefined
   connectWallet: undefined
   settings: undefined
-  ticketDetail: TicketInfo
+  ticketDetail: {
+    ticketId: number
+  }
   search: undefined
-  scan: undefined
+  collectorAddressScanner: undefined
   qr: TicketInfo
   result: {
     isSuccessfully: boolean

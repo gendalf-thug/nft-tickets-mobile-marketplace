@@ -31,30 +31,31 @@ interface BlockMessageProps {
   style?: StyleProp<ViewStyle>
   children?: React.ReactNode
   numberOfLines?: number
+  customBgColor?: Color
 }
 
 export function BlockMessage({
   blockType = 'info',
   style,
   hideIcon,
+  customBgColor,
   children,
   numberOfLines,
 }: BlockMessageProps) {
   const {styles, colors} = useThematicStyles(rawStyles)
   const {component: IconComponent, color, bgColor} = Icons[blockType]
 
-  const textStyle = [styles.text, !hideIcon ? styles.iconText : null]
-  const containerStyle = [styles.container, {backgroundColor: colors[bgColor]}]
+  const textStyle = [!hideIcon ? styles.iconText : null]
+  const containerStyle = [
+    styles.container,
+    {backgroundColor: colors[customBgColor ? customBgColor : bgColor]},
+  ]
 
   return (
     <View style={[containerStyle, style]}>
       {!hideIcon && <IconComponent size={18} color={colors[color]} />}
       <View style={styles.textContainer}>
-        <Text
-          numberOfLines={numberOfLines}
-          ibm3
-          style={textStyle}
-          color={color}>
+        <Text numberOfLines={numberOfLines} p1 style={textStyle} color={color}>
           {children}
         </Text>
       </View>
@@ -65,7 +66,7 @@ export function BlockMessage({
 const rawStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderRadius: 6,
+    borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 8,
   },
@@ -74,7 +75,6 @@ const rawStyles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   iconText: {marginLeft: 6},
-  text: {},
 })
 
 export type SvgIconProps = SvgProps & {size?: number}

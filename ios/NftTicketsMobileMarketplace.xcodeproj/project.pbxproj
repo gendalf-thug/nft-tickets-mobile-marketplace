@@ -23,6 +23,7 @@
 		4B9E89557C33456BB79066C0 /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A59AC5CE7BA54EC8B3D344B7 /* Oswald-ExtraLight.ttf */; };
 		57CE13C75F4D456FBAEA83EE /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58F5395DD875434D87D41F7F /* Montserrat-BoldItalic.ttf */; };
 		5AB4A1C06E094C4DB802B93E /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 78C130F9842A4E8993D7006E /* Oswald-SemiBold.ttf */; };
+		64653E1629DA9F8700D4AB7E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64653E1829DA9F8700D4AB7E /* InfoPlist.strings */; };
 		702AB61F4AB0465F9B9A596A /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87F233D36FE5413E86743CF9 /* Montserrat-Bold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -53,29 +54,31 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NftTicketsMobileMarketplace/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NftTicketsMobileMarketplace/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F9ED6022E824A1EB961DAD7 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Regular.ttf"; path = "../assets/fonts/Oswald-Regular.ttf"; sourceTree = "<group>"; };
-		2500A84303D14370AB28B2EF /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../assets/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
+		1F9ED6022E824A1EB961DAD7 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Regular.ttf"; path = "../assets/fonts/Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		2500A84303D14370AB28B2EF /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../assets/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-NftTicketsMobileMarketplace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NftTicketsMobileMarketplace.debug.xcconfig"; path = "Target Support Files/Pods-NftTicketsMobileMarketplace/Pods-NftTicketsMobileMarketplace.debug.xcconfig"; sourceTree = "<group>"; };
-		4F38E20825F540478D494200 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		4FA8A463C6A240D287DC574D /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
-		50014AD23444480091D1DBA7 /* PTSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Regular.ttf"; path = "../assets/fonts/PTSans-Regular.ttf"; sourceTree = "<group>"; };
-		5213B4F7A714499DAA2C982A /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
-		5516EAADFB794FAAA7FDF36C /* Oswald-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Light.ttf"; path = "../assets/fonts/Oswald-Light.ttf"; sourceTree = "<group>"; };
+		4F38E20825F540478D494200 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		4FA8A463C6A240D287DC574D /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
+		50014AD23444480091D1DBA7 /* PTSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Regular.ttf"; path = "../assets/fonts/PTSans-Regular.ttf"; sourceTree = "<group>"; };
+		5213B4F7A714499DAA2C982A /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
+		5516EAADFB794FAAA7FDF36C /* Oswald-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Light.ttf"; path = "../assets/fonts/Oswald-Light.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-NftTicketsMobileMarketplace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NftTicketsMobileMarketplace.release.xcconfig"; path = "Target Support Files/Pods-NftTicketsMobileMarketplace/Pods-NftTicketsMobileMarketplace.release.xcconfig"; sourceTree = "<group>"; };
-		58F5395DD875434D87D41F7F /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../assets/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
+		58F5395DD875434D87D41F7F /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../assets/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig"; path = "Target Support Files/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-NftTicketsMobileMarketplace.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NftTicketsMobileMarketplace.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		78C130F9842A4E8993D7006E /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-SemiBold.ttf"; path = "../assets/fonts/Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
+		64653E1729DA9F8700D4AB7E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		64653E1929DAA06700D4AB7E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		78C130F9842A4E8993D7006E /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-SemiBold.ttf"; path = "../assets/fonts/Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NftTicketsMobileMarketplace/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		87F233D36FE5413E86743CF9 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		87F233D36FE5413E86743CF9 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.release.xcconfig"; path = "Target Support Files/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.release.xcconfig"; sourceTree = "<group>"; };
-		9BD0239B495E4CDDB6A4E744 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
-		A59AC5CE7BA54EC8B3D344B7 /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-ExtraLight.ttf"; path = "../assets/fonts/Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
-		B5EBF7654CE94E9A82E3CBA1 /* PTSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Bold.ttf"; path = "../assets/fonts/PTSans-Bold.ttf"; sourceTree = "<group>"; };
-		DC28760971C044B5ACE9B8D3 /* PTSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-BoldItalic.ttf"; path = "../assets/fonts/PTSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		9BD0239B495E4CDDB6A4E744 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
+		A59AC5CE7BA54EC8B3D344B7 /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-ExtraLight.ttf"; path = "../assets/fonts/Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
+		B5EBF7654CE94E9A82E3CBA1 /* PTSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Bold.ttf"; path = "../assets/fonts/PTSans-Bold.ttf"; sourceTree = "<group>"; };
+		DC28760971C044B5ACE9B8D3 /* PTSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-BoldItalic.ttf"; path = "../assets/fonts/PTSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EDFD328664494FB585AE88B1 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
-		F0C9D9D93EC7499999FD103C /* PTSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Italic.ttf"; path = "../assets/fonts/PTSans-Italic.ttf"; sourceTree = "<group>"; };
+		EDFD328664494FB585AE88B1 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
+		F0C9D9D93EC7499999FD103C /* PTSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PTSans-Italic.ttf"; path = "../assets/fonts/PTSans-Italic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +121,7 @@
 		13B07FAE1A68108700A75B9A /* NftTicketsMobileMarketplace */ = {
 			isa = PBXGroup;
 			children = (
+				64653E1829DA9F8700D4AB7E /* InfoPlist.strings */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -191,7 +195,6 @@
 				4F38E20825F540478D494200 /* Montserrat-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -275,6 +278,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -309,6 +313,7 @@
 				5AB4A1C06E094C4DB802B93E /* Oswald-SemiBold.ttf in Resources */,
 				EA4C355497664E51A8F7F23E /* PTSans-Bold.ttf in Resources */,
 				EE6BA6E6710241F0BACEF93E /* PTSans-BoldItalic.ttf in Resources */,
+				64653E1629DA9F8700D4AB7E /* InfoPlist.strings in Resources */,
 				2494FCCB8E814A7F956D7175 /* PTSans-Italic.ttf in Resources */,
 				C55B8A0F11644DB3A9F3E2FF /* PTSans-Regular.ttf in Resources */,
 				702AB61F4AB0465F9B9A596A /* Montserrat-Bold.ttf in Resources */,
@@ -499,6 +504,18 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		64653E1829DA9F8700D4AB7E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				64653E1729DA9F8700D4AB7E /* en */,
+				64653E1929DAA06700D4AB7E /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

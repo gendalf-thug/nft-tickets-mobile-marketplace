@@ -14,7 +14,7 @@ import {useTheme} from './hooks'
 import {ConnectWalletScreen} from './screens/ConnectWallet'
 import {CreateEventScreen} from './screens/CreateEvent'
 import {QRCodeScreen} from './screens/QRCodeScreen'
-import {QRScannerScreen} from './screens/QRScanner'
+import {QRCollectorAddressScannerScreen} from './screens/QRCollectorAddressScanner'
 import {ResultScreen} from './screens/ResultScreen'
 import {SearchScreen} from './screens/Search'
 import {SettingsScreen} from './screens/SettingsScreen'
@@ -58,7 +58,10 @@ export function App() {
           <Stack.Screen name="settings" component={SettingsScreen} />
           <Stack.Screen name="ticketDetail" component={TicketDetailScreen} />
           <Stack.Screen name="search" component={SearchScreen} />
-          <Stack.Screen name="scan" component={QRScannerScreen} />
+          <Stack.Screen
+            name="collectorAddressScanner"
+            component={QRCollectorAddressScannerScreen}
+          />
           <Stack.Screen name="result" component={ResultScreen} />
           <Stack.Screen name="createEvent" component={CreateEventScreen} />
           <Stack.Screen name="qr" component={QRCodeScreen} />

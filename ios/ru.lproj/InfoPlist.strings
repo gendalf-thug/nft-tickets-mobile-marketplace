@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  NftTicketsMobileMarketplace
+
+  Created by Вадим Прасолов on 03.04.2023.
+  
+*/
+
+"NSCameraUsageDescription" = "Для сканирования qr кодов приложению необходим доступ к камере.";
