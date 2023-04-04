@@ -2,180 +2,93 @@
 
 pragma solidity ^0.8.9;
 
-import '@openzeppelin/contracts/token/ERC1155/IERC1155.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
-error ItemNotForSale(address nftAddress, uint256 tokenId);
-error NotListed(address nftAddress, uint256 tokenId);
-error AlreadyListed(address nftAddress, uint256 tokenId);
-error NoProceeds();
-error NotOwner();
-error NotApprovedForMarketplace();
-error PriceMustBeAboveZero();
-error InsufficientTickets();
-error OnlySellerCanDoThis();
+// error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
+// error ItemNotForSale(address nftAddress, uint256 tokenId);
+// error NotListed(address nftAddress, uint256 tokenId);
+// error AlreadyListed(address nftAddress, uint256 tokenId);
+// error NoProceeds();
+// error NotOwner();
+// error NotApprovedForMarketplace();
+// error PriceMustBeAboveZero();
+// error InsufficientTickets();
+// error OnlySellerCanDoThis();
 
-contract NftTicketsMarketplace is ReentrancyGuard {
-  using Counters for Counters.Counter;
+contract ERC1155Marketplace is Ownable, ERC1155Holder {
+    using SafeMath for uint256;
 
-  IERC1155 ticketsContract;
+    struct Listing {
+        uint256 tokenId;
+        address payable seller;
+        uint256 price;
+        uint256 amountAvailable;
+        bool active;
+    }
 
-  struct Offer {
-    uint pricePerUnit;
-    uint quantity;
-    address seller;
-  }
+    mapping (uint256 => Listing) public listings;
+    mapping (uint256 => mapping (address => uint256)) public purchases;
 
-  event OfferCreate(
-    address indexed seller,
-    uint quantity,
-    uint indexed ticketId,
-    uint pricePerUnit,
-    uint indexed offerID
-  );
+    IERC1155 private _tokenContract;
 
-  event OfferRevoked(
-    address indexed seller,
-    uint quantity,
-    uint indexed ticketId,
-    uint indexed offerID
-  );
+    event ListingCreated(uint256 indexed tokenId, address seller, uint256 price, uint256 amountAvailable);
+    event ListingRemoved(uint256 indexed tokenId, address seller);
+    event ListingPurchased(uint256 indexed tokenId, address buyer, uint256 amount);
 
-  event ItemBought(
-    address indexed buyer,
-    address indexed nftAddress,
-    uint256 indexed tokenId,
-    uint256 price
-  );
+    constructor(address tokenContractAddress) {
+        _tokenContract = IERC1155(tokenContractAddress);
+    }
 
-  // TICKET_ID => mapping(OFFER_ID => {Listing object})
-  mapping(uint => mapping(uint => Offer)) private listings;
-  // TICKET_ID => COUNTER
-  mapping(uint => Counters.Counter) private listingCounnters;
+    function createListing(uint256 tokenId, uint256 price, uint256 amountAvailable) public {
+        require(_tokenContract.balanceOf(msg.sender, tokenId) >= amountAvailable, "You do not own enough tokens.");
+        require(listings[tokenId].active == false, "Listing is already active.");
 
-  mapping(address => uint256) private proceeds;
+        listings[tokenId] = Listing(tokenId, payable(msg.sender), price, amountAvailable, true);
+        _tokenContract.safeTransferFrom(msg.sender, address(this), tokenId, amountAvailable, "");
 
-  constructor(address ticketsContractAddress) {
-    ticketsContract = IERC1155(ticketsContractAddress);
-  }
+        emit ListingCreated(tokenId, msg.sender, price, amountAvailable);
+    }
 
-  function listTickets(
-    uint ticketId,
-    uint pricePerUnit,
-    uint sellAmount
-  ) external nonReentrant {
-    // check price > 0
-    if (pricePerUnit <= 0) revert PriceMustBeAboveZero();
-    // check aproved > 0
-    if (!ticketsContract.isApprovedForAll(msg.sender, address(this)))
-      revert NotApprovedForMarketplace();
-    // check balance
-    if (ticketsContract.balanceOf(msg.sender, ticketId) < sellAmount)
-      revert InsufficientTickets();
+    function removeListing(uint256 tokenId) public {
+        Listing storage listing = listings[tokenId];
+        require(listing.active == true, "Listing is not active.");
+        require(listing.seller == msg.sender, "You are not the seller.");
 
-    ticketsContract.safeTransferFrom(
-      msg.sender,
-      address(this),
-      ticketId,
-      sellAmount,
-      ''
-    );
+        delete listings[tokenId];
+        _tokenContract.safeTransferFrom(address(this), msg.sender, tokenId, listing.amountAvailable, "");
 
-    listingCounnters[ticketId].increment();
-    uint256 newListingId = listingCounnters[ticketId].current();
+        emit ListingRemoved(tokenId, msg.sender);
+    }
 
-    listings[ticketId][newListingId] = Offer(
-      pricePerUnit,
-      sellAmount,
-      msg.sender
-    );
-    emit OfferCreate(
-      msg.sender,
-      sellAmount,
-      ticketId,
-      pricePerUnit,
-      newListingId
-    );
-  }
+    function buyListing(uint256 tokenId, uint256 amount) public payable returns (uint256) {
+        Listing storage listing = listings[tokenId];
+        require(listing.active == true, "Listing is not active.");
+        require(amount <= listing.amountAvailable, "Insufficient tickets available.");
+        require(msg.value >= listing.price.mul(amount), "Insufficient funds.");
 
-  /*
-   * @notice Method for cancelling listing
-   * @param nftAddress Address of NFT contract
-   * @param tokenId Token ID of NFT
-   */
-  function cancelListing(uint ticketId, uint offerID) external {
-    Offer memory canceledOffer = listings[ticketId][offerID];
-    if (canceledOffer.seller != msg.sender) revert OnlySellerCanDoThis();
+        purchases[tokenId][msg.sender] = purchases[tokenId][msg.sender].add(amount);
+        listing.amountAvailable = listing.amountAvailable.sub(amount);
 
-    delete (listings[ticketId][offerID]);
+        _tokenContract.safeTransferFrom(address(this), msg.sender, tokenId, amount, "");
+        listing.seller.transfer(msg.value);
 
-    ticketsContract.safeTransferFrom(
-      address(this),
-      canceledOffer.seller,
-      ticketId,
-      canceledOffer.quantity,
-      ''
-    );
+        emit ListingPurchased(tokenId, msg.sender, amount);
 
-    emit OfferRevoked(msg.sender, canceledOffer.quantity, ticketId, offerID);
-  }
+        return 0;
+    }
 
-  //   function buyItem(
-  //     address nftAddress,
-  //     uint256 tokenId
-  //   ) external payable nonReentrant {
-  //     Listing memory listedItem = s_listings[nftAddress][tokenId];
-  //     if (msg.value < listedItem.price) {
-  //       revert PriceNotMet(nftAddress, tokenId, listedItem.price);
-  //     }
-  //     s_proceeds[listedItem.seller] += msg.value;
-  //     // Could just send the money...
-  //     // https://fravoll.github.io/solidity-patterns/pull_over_push.html
-  //     delete (s_listings[nftAddress][tokenId]);
-  //     IERC721(nftAddress).safeTransferFrom(
-  //       listedItem.seller,
-  //       msg.sender,
-  //       tokenId
-  //     );
-  //     emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
-  //   }
+    function createCustomListing(uint256 tokenId, uint256 price, uint256 amountAvailable) public {
+        require(_tokenContract.balanceOf(msg.sender, tokenId) >= amountAvailable, "You do not own enough tokens.");
 
-  //   function updateListing(
-  //     address nftAddress,
-  //     uint256 tokenId,
-  //     uint256 newPrice
-  //   ) external nonReentrant {
-  //     //We should check the value of `newPrice` and revert if it's below zero (like we also check in `listItem()`)
-  //     if (newPrice <= 0) {
-  //       revert PriceMustBeAboveZero();
-  //     }
-  //     s_listings[nftAddress][tokenId].price = newPrice;
-  //     emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
-  //   }
+        listings[tokenId] = Listing(tokenId, payable(msg.sender), price, amountAvailable, true);
 
-  //   /*
-  //    * @notice Method for withdrawing proceeds from sales
-  //    */
-  //   function withdrawProceeds() external {
-  //     uint256 proceeds = s_proceeds[msg.sender];
-  //     if (proceeds <= 0) {
-  //       revert NoProceeds();
-  //     }
-  //     s_proceeds[msg.sender] = 0;
-  //     (bool success, ) = payable(msg.sender).call{value: proceeds}('');
-  //     require(success, 'Transfer failed');
-  //   }
+        emit ListingCreated(tokenId, msg.sender, price, amountAvailable);
+    }
 
-  //   function getListing(
-  //     address nftAddress,
-  //     uint256 tokenId
-  //   ) external view returns (Offer memory) {
-  //     return s_listings[nftAddress][tokenId];
-  //   }
-
-  //   function getProceeds(address seller) external view returns (uint256) {
-  //     return s_proceeds[seller];
-  //   }
+    function setTokenContract(address tokenContractAddress) public onlyOwner {
+        _tokenContract = IERC1155(tokenContractAddress);
+    }
 }

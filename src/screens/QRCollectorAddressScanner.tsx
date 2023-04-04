@@ -57,7 +57,6 @@ export function QRCollectorAddressScannerScreen() {
       if (first.uri) {
         try {
           const qrArray = await readQR(first.uri)
-          console.log('🚀 - qrArray:', qrArray)
           onScanBarcodes(qrArray)
         } catch {
           showError('Failed to recognize QR code')
