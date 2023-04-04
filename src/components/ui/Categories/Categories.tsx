@@ -53,8 +53,8 @@ export function Categories({
       <Text style={styles.text} h3>
         Категории
       </Text>
-      {renderList}
       <Spacer height={8} />
+      {renderList}
     </View>
   )
 }

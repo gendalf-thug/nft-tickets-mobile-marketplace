@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "postinstall": "patch-package && node_modules/.bin/rn-nodeify --install stream,http,https,os,vm,crypto,process,events --yarn --hack && react-native setup-ios-permissions",
-    "link-asset": "npx react-native-asset"
+    "link-asset": "npx react-native-asset",
+    "fast-clean": "cd android && ./gradlew clean && cd .. && watchman watch-del-all && yarn cache clean && yarn start --reset-cache"
   },
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",

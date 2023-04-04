@@ -1,35 +1,20 @@
 import React, {useRef} from 'react'
 
 import {ethers} from 'ethers'
-// import {launchImageLibrary} from 'react-native-image-picker'
+import {launchImageLibrary} from 'react-native-image-picker'
 
 import {QRScanner, QRScannerRefType} from 'src/components/QRScanner'
 import {useScreenBlockPortrait, useTypedNavigation} from 'src/hooks'
+import {readQR} from 'src/services/QrReader'
 
 export function QRCollectorAddressScannerScreen() {
   const {navigate, goBack} = useTypedNavigation()
   const scannerRef = useRef<QRScannerRefType>(null)
 
   useScreenBlockPortrait()
-  // const onClickGallery = async () => {
-  //   const response = await launchImageLibrary({mediaType: 'photo'})
-  //   if (response.assets && response.assets.length) {
-  //     const first = response.assets[0]
-
-  //     if (first.uri) {
-  //       try {
-  //         const data = await QRreader(first.uri)
-  //         setCode(data)
-  //         const slicedAddress = prepareAddress(data)
-  //         if (slicedAddress) {
-  //           onGetAddress(slicedAddress)
-  //         }
-  //       } catch (err) {
-  //         console.log(err)
-  //       }
-  //     }
-  //   }
-  // }
+  const showError = (error: string) => {
+    scannerRef.current?.showError(error)
+  }
   const onScanBarcodes = (qrValues: string[]) => {
     // console.log(
     //   JSON.stringify({
@@ -48,12 +33,10 @@ export function QRCollectorAddressScannerScreen() {
           if (ethers.utils.isAddress(qrObject.address)) {
             return true
           } else {
-            scannerRef.current?.showError('Incorrect address')
+            showError('Incorrect address')
           }
         } else {
-          scannerRef.current?.showError(
-            'The necessary qr code parameters are missing',
-          )
+          showError('The necessary qr code parameters are missing')
         }
       } catch (error) {
         scannerRef.current?.showError('Failed to process qr code')
@@ -66,7 +49,22 @@ export function QRCollectorAddressScannerScreen() {
     }
   }
 
-  const onChoiceImage = () => {}
+  const onChoiceImage = async () => {
+    const response = await launchImageLibrary({mediaType: 'photo'})
+    if (response.assets && response.assets.length) {
+      const first = response.assets[0]
+
+      if (first.uri) {
+        try {
+          const qrArray = await readQR(first.uri)
+          console.log('🚀 - qrArray:', qrArray)
+          onScanBarcodes(qrArray)
+        } catch {
+          showError('Failed to recognize QR code')
+        }
+      }
+    }
+  }
 
   return (
     <QRScanner

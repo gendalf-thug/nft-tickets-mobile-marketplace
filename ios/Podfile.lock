@@ -75,7 +75,7 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleDataTransport (9.2.1):
+  - GoogleDataTransport (9.2.2):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -96,11 +96,11 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.3.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
-  - GoogleUtilities/Environment (7.11.0):
+  - GoogleUtilities/Environment (7.11.1):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.0):
+  - GoogleUtilities/Logger (7.11.1):
     - GoogleUtilities/Environment
-  - GoogleUtilities/UserDefaults (7.11.0):
+  - GoogleUtilities/UserDefaults (7.11.1):
     - GoogleUtilities/Logger
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
@@ -789,10 +789,10 @@ SPEC CHECKSUMS:
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
-  GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
+  GoogleDataTransport: 8378d1fa8ac49753ea6ce70d65a7cb70ce5f66e6
   GoogleMLKit: 2bd0dc6253c4d4f227aad460f69215a504b2980e
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
-  GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
+  GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   hermes-engine: 38bfe887e456b33b697187570a08de33969f5db7

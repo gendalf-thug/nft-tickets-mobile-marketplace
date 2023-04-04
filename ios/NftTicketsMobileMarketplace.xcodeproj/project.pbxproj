@@ -23,6 +23,8 @@
 		4B9E89557C33456BB79066C0 /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A59AC5CE7BA54EC8B3D344B7 /* Oswald-ExtraLight.ttf */; };
 		57CE13C75F4D456FBAEA83EE /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58F5395DD875434D87D41F7F /* Montserrat-BoldItalic.ttf */; };
 		5AB4A1C06E094C4DB802B93E /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 78C130F9842A4E8993D7006E /* Oswald-SemiBold.ttf */; };
+		6451079329DC62FD00D0C306 /* RCTQrReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6451079229DC62FD00D0C306 /* RCTQrReader.m */; };
+		6451079429DC62FD00D0C306 /* RCTQrReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6451079229DC62FD00D0C306 /* RCTQrReader.m */; };
 		64653E1629DA9F8700D4AB7E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64653E1829DA9F8700D4AB7E /* InfoPlist.strings */; };
 		702AB61F4AB0465F9B9A596A /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87F233D36FE5413E86743CF9 /* Montserrat-Bold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.a */; };
@@ -66,6 +68,8 @@
 		58F5395DD875434D87D41F7F /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../assets/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig"; path = "Target Support Files/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests/Pods-NftTicketsMobileMarketplace-NftTicketsMobileMarketplaceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-NftTicketsMobileMarketplace.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NftTicketsMobileMarketplace.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6451079129DC625600D0C306 /* RCTQrReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTQrReader.h; sourceTree = "<group>"; };
+		6451079229DC62FD00D0C306 /* RCTQrReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTQrReader.m; sourceTree = "<group>"; };
 		64653E1729DA9F8700D4AB7E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		64653E1929DAA06700D4AB7E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		78C130F9842A4E8993D7006E /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-SemiBold.ttf"; path = "../assets/fonts/Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6451079129DC625600D0C306 /* RCTQrReader.h */,
+				6451079229DC62FD00D0C306 /* RCTQrReader.m */,
 				13B07FAE1A68108700A75B9A /* NftTicketsMobileMarketplace */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* NftTicketsMobileMarketplaceTests */,
@@ -483,6 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* NftTicketsMobileMarketplaceTests.m in Sources */,
+				6451079429DC62FD00D0C306 /* RCTQrReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				6451079329DC62FD00D0C306 /* RCTQrReader.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
