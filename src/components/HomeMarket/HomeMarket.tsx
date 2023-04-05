@@ -3,12 +3,16 @@ import React from 'react'
 import {ScrollView, StyleSheet, View} from 'react-native'
 import {FlatList} from 'react-native-gesture-handler'
 
-import {Background, Spacer, Text, TicketCardColumn} from 'src/components/ui'
+import {
+  Background,
+  HomeHeader,
+  Spacer,
+  Text,
+  TicketCardColumn,
+} from 'src/components/ui'
 import {useThematicStyles} from 'src/hooks'
 import {TicketInfo} from 'src/types'
 import {fakeTicketsData} from 'src/variables/fakeData'
-
-import {HomeMarketHeader} from './HomeMarketHeader'
 
 import {Categories} from '../ui/Categories'
 
@@ -29,10 +33,7 @@ export function HomeMarket({
 
   return (
     <Background>
-      <HomeMarketHeader
-        onPressSearch={onPressSearch}
-        onPressScan={onPressScan}
-      />
+      <HomeHeader onPressSearch={onPressSearch} onPressScan={onPressScan} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <Categories

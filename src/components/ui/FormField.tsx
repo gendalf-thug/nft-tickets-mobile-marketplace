@@ -7,6 +7,7 @@ import {
   BlockMessage,
   FormDateTime,
   FormTextInput,
+  Spacer,
   Text,
 } from 'src/components/ui'
 import {useThematicStyles} from 'src/hooks'
@@ -42,10 +43,11 @@ export function FormField({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text t12 style={styles.title}>
+        <Text p1 style={styles.title}>
           {title}
         </Text>
       </View>
+      <Spacer height={2} />
       {(fieldType === 'date' || fieldType === 'time') && (
         <FormDateTime
           placeholder={placeholder}

@@ -6,7 +6,6 @@ import {Image, ScrollView, StyleSheet, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {formatPrice} from 'src/components/formatPrice'
 import {
   Button,
   Categories,
@@ -16,6 +15,7 @@ import {
 } from 'src/components/ui'
 import {Background} from 'src/components/ui/Background'
 import {capitalize} from 'src/helpers'
+import {formatPrice} from 'src/helpers/formatPrice'
 import {useThematicStyles} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 import {TicketInfo} from 'src/types'

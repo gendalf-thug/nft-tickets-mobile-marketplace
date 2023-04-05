@@ -1,43 +1,48 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
+import {useTypedNavigation} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 
-import {Background, Button, CustomHeader, FormField, Text} from '../ui'
+import {Background, Button, CustomHeader, FormField, Spacer, Text} from '../ui'
 import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
 
-interface CreateEventProps {
+interface CreateTicketsProps {
   onBack: () => void
   handleSubmit: () => void
 }
 
-export function CreateEvent({onBack, handleSubmit}: CreateEventProps) {
+export function CreateTickets({onBack, handleSubmit}: CreateTicketsProps) {
   const {bottom} = useSafeAreaInsets()
+
+  const {setOptions} = useTypedNavigation()
+
+  useEffect(() => {
+    setOptions({
+      headerShown: true,
+      headerTitleAlign: 'left',
+      headerTitle: 'Create Tickets',
+    })
+  }, [])
 
   return (
     <Background style={styles.background}>
       <KeyboardSafeArea>
-        <CustomHeader
-          onPressLeft={onBack}
-          colorLeft={Color.primary}
-          title={'Create Event'}
-          iconLeft={'arrow-back'}
-          style={styles.header}
-        />
         <ScrollView
           contentContainerStyle={[
             styles.container,
             {paddingBottom: bottom + 10},
           ]}>
-          <View style={styles.descriptionText}>
-            <Text t8>Create new event</Text>
-            <Text t12>
-              You need to specify the data for the event for which you want to
-              generate tickets.
-            </Text>
-          </View>
+          <Spacer height={18} />
+          <Text h2>Create new event</Text>
+          <Spacer height={10} />
+          <Text p1>
+            You need to specify the data for the event for which you want to
+            generate tickets.
+          </Text>
+          <Spacer height={24} />
           <FormField
             fieldType="input"
             nextField="location"
@@ -96,17 +101,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   container: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
   },
   header: {
     width: '100%',
-    justifyContent: 'space-between',
-  },
-  descriptionText: {
-    width: '100%',
-    marginVertical: 25,
-    height: 70,
     justifyContent: 'space-between',
   },
 })

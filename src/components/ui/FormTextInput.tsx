@@ -57,7 +57,7 @@ export function FormTextInput({
               value={value}
               selectionColor={colors.primary}
               keyboardType={isPrice ? 'phone-pad' : 'default'}
-              placeholderTextColor={colors.primary2}
+              placeholderTextColor={colors.primaryOpacity1}
               returnKeyType={nextField ? 'next' : 'default'}
             />
           )
@@ -65,9 +65,9 @@ export function FormTextInput({
         control={control}
       />
       {isPrice && (
-        <TouchableOpacity style={styles.part2} activeOpacity={0.75}>
-          <Text t3 color={Color.primary}>
-            ZLT
+        <TouchableOpacity style={styles.part2}>
+          <Text h4 color={Color.primary}>
+            ETH
           </Text>
         </TouchableOpacity>
       )}
@@ -79,10 +79,10 @@ const rawStyles = StyleSheet.create({
   input: {
     height: 50,
     width: '100%',
-    borderRadius: 25,
-    paddingLeft: 25,
-    backgroundColor: Color.bg2,
-    fontFamily: 'Montserrat-Regular',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    backgroundColor: Color.inputBg,
+    fontFamily: 'PTSans-Regular',
     fontSize: 16,
     lineHeight: 22,
   },
@@ -90,12 +90,10 @@ const rawStyles = StyleSheet.create({
     height: 50,
     width: '80%',
     alignItems: 'center',
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    paddingLeft: 25,
-    backgroundColor: Color.bg2,
+    paddingLeft: 16,
+    backgroundColor: Color.inputBg,
     flexDirection: 'row',
   },
   row: {
@@ -106,9 +104,8 @@ const rawStyles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRightRadius: 25,
-    backgroundColor: Color.bg2,
-    borderTopRightRadius: 25,
-    borderBottomRightRadius: 25,
+    backgroundColor: Color.inputBg,
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
   },
 })

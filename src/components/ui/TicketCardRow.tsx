@@ -4,7 +4,7 @@ import {format} from 'date-fns'
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import {formatPriceSmall} from 'src/components/formatPrice'
+import {formatPriceSmall} from 'src/helpers/formatPrice'
 import {useThematicStyles} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 import {TicketInfo} from 'src/types'
@@ -114,7 +114,7 @@ const rawStyles = StyleSheet.create({
     width: '100%',
     height: 148,
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 8,
     backgroundColor: Color.card,
   },
   imageContainer: {

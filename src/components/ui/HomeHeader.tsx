@@ -8,17 +8,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import {useTheme} from 'src/hooks'
 import {Color} from 'src/themeTypes'
 
-import {Spacer, Text} from '../ui'
+import {Spacer, Text} from '.'
 
-interface HomeMarketHeaderProps {
+interface HomeHeaderProps {
   onPressSearch?: () => void
   onPressScan?: () => void
 }
 
-export function HomeMarketHeader({
-  onPressSearch,
-  onPressScan,
-}: HomeMarketHeaderProps) {
+export function HomeHeader({onPressSearch, onPressScan}: HomeHeaderProps) {
   const {colors} = useTheme()
   const {top} = useSafeAreaInsets()
 

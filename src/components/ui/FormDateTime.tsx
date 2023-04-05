@@ -67,7 +67,7 @@ export function FormDateTime({
                     style={styles.row}
                     onPress={() => setShowPicker(pr => !pr)}>
                     <View style={[styles.inputAlternate, style]}>
-                      <Text t9 color={Color.primary}>
+                      <Text p1 style={styles.textContent} color={Color.primary}>
                         {hasChanges ? format(value, 'dd.MM.yyyy') : placeholder}
                       </Text>
                     </View>
@@ -85,7 +85,7 @@ export function FormDateTime({
                     style={styles.row}
                     onPress={() => setShowPicker(pr => !pr)}>
                     <View style={[styles.inputAlternate, style]}>
-                      <Text t9 color={Color.primary}>
+                      <Text p1 style={styles.textContent} color={Color.primary}>
                         {hasChanges ? format(value, 'HH:mm') : placeholder}
                       </Text>
                     </View>
@@ -144,7 +144,7 @@ const rawStyles = StyleSheet.create({
     width: '100%',
     borderRadius: 25,
     paddingLeft: 25,
-    backgroundColor: Color.bg2,
+    backgroundColor: Color.inputBg,
     fontFamily: 'Montserrat-Regular',
     fontSize: 16,
     lineHeight: 22,
@@ -158,7 +158,7 @@ const rawStyles = StyleSheet.create({
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     paddingLeft: 25,
-    backgroundColor: Color.bg2,
+    backgroundColor: Color.inputBg,
     flexDirection: 'row',
   },
   part2: {
@@ -167,11 +167,14 @@ const rawStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRightRadius: 25,
-    backgroundColor: Color.bg2,
+    backgroundColor: Color.inputBg,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
   },
   row: {
     flexDirection: 'row',
+  },
+  textContent: {
+    fontSize: 16,
   },
 })

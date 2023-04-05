@@ -4,7 +4,7 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import * as yup from 'yup'
 
-import {CreateEvent} from 'src/components/CreateEvent'
+import {CreateTickets} from 'src/components/CreateTickets'
 import {useTypedNavigation} from 'src/hooks'
 
 const schema = yup
@@ -34,7 +34,7 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>
 
-export function CreateEventScreen() {
+export function CreateTicketsScreen() {
   const {goBack, navigate} = useTypedNavigation()
   const form = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -57,7 +57,7 @@ export function CreateEventScreen() {
 
   return (
     <FormProvider {...form}>
-      <CreateEvent
+      <CreateTickets
         handleSubmit={form.handleSubmit(onSuccess, onError)}
         onBack={goBack}
       />

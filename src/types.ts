@@ -26,7 +26,7 @@ export type RootStackParamList = {
     text: string
     navigateToScreen?: keyof RootStackParamList
   }
-  createEvent: undefined
+  createTickets: undefined
 }
 
 // INTERFACES

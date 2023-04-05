@@ -12,7 +12,7 @@ import {RootStackParamList} from 'src/types'
 
 import {useTheme} from './hooks'
 import {ConnectWalletScreen} from './screens/ConnectWallet'
-import {CreateEventScreen} from './screens/CreateEvent'
+import {CreateTicketsScreen} from './screens/CreateTickets'
 import {QRCodeScreen} from './screens/QRCodeScreen'
 import {QRCollectorAddressScannerScreen} from './screens/QRCollectorAddressScanner'
 import {ResultScreen} from './screens/ResultScreen'
@@ -63,7 +63,7 @@ export function App() {
             component={QRCollectorAddressScannerScreen}
           />
           <Stack.Screen name="result" component={ResultScreen} />
-          <Stack.Screen name="createEvent" component={CreateEventScreen} />
+          <Stack.Screen name="createTickets" component={CreateTicketsScreen} />
           <Stack.Screen name="qr" component={QRCodeScreen} />
         </Stack.Group>
       </Stack.Navigator>

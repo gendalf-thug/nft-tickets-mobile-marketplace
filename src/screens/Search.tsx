@@ -7,7 +7,7 @@ import {TicketInfo} from 'src/types'
 export function SearchScreen() {
   const {navigate} = useTypedNavigation()
   const onPressCard = (item: TicketInfo) => {
-    navigate('ticketDetail', item)
+    navigate('ticketDetail', {ticketId: item.id})
   }
   return <Search onPressCard={onPressCard} />
 }
