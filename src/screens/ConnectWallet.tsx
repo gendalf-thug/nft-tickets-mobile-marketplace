@@ -2,7 +2,7 @@ import React from 'react'
 
 import {ConnectWallet} from 'src/components/ConnectWallet'
 import {useTypedNavigation} from 'src/hooks'
-// import {MMSDK} from 'src/services'
+import {MMSDK} from 'src/services'
 import {connectMethodType} from 'src/types'
 
 export function ConnectWalletScreen() {
@@ -12,11 +12,13 @@ export function ConnectWalletScreen() {
     {
       name: 'MetaMask',
       async onConnect() {
-        // const accounts = await MMSDK.getProvider().request({
-        //   method: 'eth_requestAccounts',
-        // })
-
+        await MMSDK.getProvider().request({
+          method: 'eth_requestAccounts',
+        })
         navigate('home')
+        // if(accounts[0]){
+        //   navigate('home')
+        // }
       },
       logoName: 'metamask',
       isAvailable: true,

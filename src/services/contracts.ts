@@ -1,109 +1,71 @@
-// import {EventEmitter} from 'events'
+import {EventEmitter} from 'events'
 
-// import {
-//   ALCHEMY_API_KEY,
-//   POLYGON_RPC_PROVIDER,
-//   POLYGON_TESTNET_RPC_PROVIDER,
-//   PRIVATE_SECRET_KEY,
-// } from '@env'
-// import {Alchemy, AlchemySettings, Network} from 'alchemy-sdk'
-// import {ethers} from 'ethers'
+// import {POLYGON_RPC_PROVIDER, POLYGON_TESTNET_RPC_PROVIDER} from '@env'
+import {ethers} from 'ethers'
 
-// import {captureException} from 'src/helpers'
+import {captureException} from 'src/helpers'
 
-// import {replaceUri} from './nft-helper'
-// import {
-//   abiProjectTask,
-//   bytecodeProjectTask,
-// } from './ready-contracts/ProjectTask'
+import {MMSDK} from './MMSDK'
+import {NftTickets, NftTicketsAbi} from './prepared-contracts'
 
-// const alchemySettings: AlchemySettings = {
-//   apiKey: ALCHEMY_API_KEY, // Replace with your Alchemy API key.
-//   network: Network.MATIC_MUMBAI, // Replace with your network.
-// }
+export const ticketsContractAddress: string = ''
+export const ticketsMarketplaceContractAddress: string = ''
 
-// export class Contracts extends EventEmitter {
-//   provider: ethers.providers.JsonRpcProvider
-//   alchemy: Alchemy
+export class Contracts extends EventEmitter {
+  provider: ethers.providers.JsonRpcProvider
+  metamaskProvider: any
 
-//   constructor() {
-//     super()
-//     this.alchemy = new Alchemy(alchemySettings)
+  constructor() {
+    super()
+    // if (__DEV__) {
+    //   this.provider = new ethers.providers.JsonRpcProvider(
+    //     POLYGON_TESTNET_RPC_PROVIDER,
+    //   )
+    // } else {
+    //   this.provider = new ethers.providers.JsonRpcProvider(POLYGON_RPC_PROVIDER)
+    // }
+    const metamaskProvider = MMSDK.getProvider()
 
-//     if (__DEV__) {
-//       this.provider = new ethers.providers.JsonRpcProvider(
-//         POLYGON_TESTNET_RPC_PROVIDER,
-//       )
-//     } else {
-//       this.provider = new ethers.providers.JsonRpcProvider(POLYGON_RPC_PROVIDER)
-//     }
-//   }
+    this.metamaskProvider = metamaskProvider
+    this.provider = new ethers.providers.Web3Provider(metamaskProvider)
+  }
+  async getBalance() {
+    const balance = await this.provider.getBalance(
+      this.metamaskProvider.selectedAddress,
+    )
 
-//   async deployProjectTaskContract(
-//     repoName: string,
-//     owner: string,
-//     issueId: number,
-//   ) {
-//     const wallet = new ethers.Wallet(PRIVATE_SECRET_KEY ?? '', this.provider)
+    return balance
+  }
 
-//     const ProjectTaskFactory = new ethers.ContractFactory(
-//       abiProjectTask,
-//       bytecodeProjectTask,
-//     )
-//     const res = await ProjectTaskFactory.connect(wallet).deploy(
-//       repoName,
-//       owner,
-//       issueId,
-//     )
-//     return res
-//   }
+  async createTickets({
+    amount,
+    ipfsMetadataHash,
+  }: {
+    amount: number
+    ipfsMetadataHash: string
+  }) {
+    try {
+      const ticketsContract = this.getNftTicketsContractObject()
 
-//   async getNftDataByAddress(address: string) {
-//     try {
-//       return await this.alchemy.nft.getNftsForOwner(address)
-//     } catch (error) {
-//       captureException(error)
-//     }
-//   }
-//   async getImageNftsByAddress(
-//     address: string,
-//   ): Promise<NftsArrayItem[] | undefined> {
-//     try {
-//       const data = await this.getNftDataByAddress(address)
-//       if (!data) {
-//         throw new Error('No data')
-//       }
-//       return (
-//         data?.ownedNfts
-//           .map(nft => ({
-//             uri: replaceUri(nft.rawMetadata?.image),
-//             name: nft.title,
-//             id: nft.tokenId,
-//           }))
-//           .filter(nft => {
-//             return !!nft.uri
-//           }) as NftsArrayItem[]
-//       ).reduce((o, i: NftsArrayItem) => {
-//         if (!o.find(v => v.uri === i.uri)) {
-//           o.push(i)
-//         }
-//         return o
-//       }, [] as NftsArrayItem[])
-//     } catch (error) {
-//       captureException(error)
-//     }
-//   }
+      const tx = await ticketsContract.createTicket(amount, ipfsMetadataHash)
+      // Пока что я без понятия как отправить с подключенного аккаунта транзакцию
+      // const txResponse = await signer.sendTransaction(tx)
 
-//   async getContract(address: string) {
-//     const contract = new ethers.Contract(address, abiProjectTask, this.provider)
-//     return contract
-//   }
-// }
+      // console.log('🚀 - txResponse:', txResponse)
+    } catch (error) {
+      captureException(error)
+    }
+  }
 
-// export const contracts = new Contracts()
+  getNftTicketsContractObject() {
+    const contract = new ethers.Contract(
+      ticketsContractAddress,
+      NftTicketsAbi,
+      this.provider,
+    ) as NftTickets
 
-// export interface NftsArrayItem {
-//   uri: string
-//   name: string
-//   id: string
-// }
+    return contract
+  }
+}
+
+export const contracts = new Contracts()

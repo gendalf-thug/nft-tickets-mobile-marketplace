@@ -44,21 +44,25 @@ export function CreateTicketsScreen() {
     },
   })
 
-  const onSuccess = (data: any) => {
-    navigate('result', {
-      text: JSON.stringify(data),
-      isSuccessfully: true,
-    })
+  const onSubmit = async (data: any) => {
+    const {eventName, location, country, time, date, price} = data
+    try {
+      navigate('result', {
+        text: JSON.stringify(data),
+        isSuccessfully: true,
+      })
+    } catch (error) {
+      console.error('😭 - error:', error)
+    }
   }
-  const onError = (e: any) => {
-    console.log('🚀 - e:', e)
-    console.log('Error 😭')
+  const onInvalid = async (e: any) => {
+    console.log('😭 - error:', e)
   }
 
   return (
     <FormProvider {...form}>
       <CreateTickets
-        handleSubmit={form.handleSubmit(onSuccess, onError)}
+        handleSubmit={form.handleSubmit(onSubmit, onInvalid)}
         onBack={goBack}
       />
     </FormProvider>
